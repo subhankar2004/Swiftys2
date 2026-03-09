@@ -26,7 +26,14 @@ const stagger = {
 };
 const lineReveal = {
   hidden: { opacity: 0, y: 48 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+  show:   {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  },
 };
 
 
@@ -41,12 +48,29 @@ const stats = [
   { value: 15,  suffix: "yr", label: "Experience"      },
 ];
 
+/*
+  LOGO HEIGHT LOGIC
+  ─────────────────
+  h1 font-size  = clamp(2.6rem, 7vw, 7.4vw)
+  h1 line-height = 1 (leading-none)
+  So the rendered cap-height ≈ 0.72 × font-size (typical for heavy uppercase)
+
+  To make the logo block exactly as tall as one line of text we match:
+    height = clamp(2.6rem, 7vw, 7.4vw)   ← same clamp as the h1
+
+  Width is auto-calculated by the aspect ratio of the logo image.
+  We set a generous max-width so it never gets too wide on large screens.
+*/
+const LOGO_HEIGHT = "clamp(2.6rem, 7vw, 7.4vw)";
+// Width is unconstrained — we let the container be wide enough that
+// object-contain never clips. The animated width drives the reveal,
+// but the final settled width must be wide enough for the full logo.
+const LOGO_WIDTH  = "clamp(120px, 14vw, 220px)";
+
 
 export default function Hero() {
   return (
     <section className="relative w-full bg-zinc-950 overflow-hidden flex flex-col md:flex-row md:h-screen">
-
-      
 
       {/* Mobile photo */}
       <div className="relative w-full h-[42vh] overflow-hidden md:hidden">
@@ -80,32 +104,23 @@ export default function Hero() {
           />
         </motion.div>
 
-        {/* Left bleed */}
         <div className="absolute inset-y-0 left-0 z-10 pointer-events-none"
           style={{
             width: "52%",
             background: "linear-gradient(to right, #09090b 0%, #09090b 20%, rgba(9,9,11,0.55) 58%, transparent 100%)",
           }} />
-
-        {/* Top vignette */}
         <div className="absolute inset-x-0 top-0 h-40 z-10 pointer-events-none"
           style={{ background: "linear-gradient(to bottom, #09090b 0%, transparent 100%)" }} />
-
-        {/* Bottom vignette */}
         <div className="absolute inset-x-0 bottom-0 z-10 pointer-events-none"
           style={{
             height: "44%",
             background: "linear-gradient(to top, #09090b 0%, #09090b 30%, rgba(9,9,11,0.7) 65%, transparent 100%)",
           }} />
-
-        {/* Red floor glow */}
         <div className="absolute z-10 pointer-events-none"
           style={{
             bottom: "18%", left: "10%", right: "5%", height: "32%",
             background: "radial-gradient(ellipse at 50% 85%, rgba(192,57,43,0.16) 0%, transparent 70%)",
           }} />
-
-        {/* Grid overlay */}
         <motion.div
           className="absolute inset-0 z-10 pointer-events-none"
           initial={{ opacity: 0 }}
@@ -120,8 +135,6 @@ export default function Hero() {
             maskImage: "radial-gradient(ellipse 70% 70% at 68% 44%, black 10%, transparent 72%)",
           }}
         />
-
-        {/* Scan sweep */}
         <motion.div
           className="absolute inset-y-0 z-20 pointer-events-none"
           style={{
@@ -132,8 +145,6 @@ export default function Hero() {
           animate={{ left: "130%" }}
           transition={{ duration: 4.5, repeat: Infinity, repeatDelay: 5.5, ease: "easeInOut" }}
         />
-
-        {/* Top-right badge */}
         <motion.div
           className="absolute top-7 right-8 z-30 flex flex-col items-end gap-1"
           initial={{ opacity: 0, x: 16 }}
@@ -144,8 +155,6 @@ export default function Hero() {
           <span className="text-white/82 font-semibold text-[15px] tracking-tight leading-none">12 Premium Bays</span>
           <span className="block w-full h-px bg-red-600/65 mt-1" />
         </motion.div>
-
-        {/* Vertical brand label */}
         <div
           className="absolute bottom-14 right-5 z-30 pointer-events-none select-none"
           style={{
@@ -158,8 +167,6 @@ export default function Hero() {
         >
           Premium Vehicle Storage · Est. 2018
         </div>
-
-        {/* Floor reflection line */}
         <div
           className="absolute z-20 pointer-events-none"
           style={{
@@ -169,10 +176,10 @@ export default function Hero() {
         />
       </div>
 
-      
+      {/* Content column */}
       <div className="relative z-20 w-full flex flex-col md:w-1/2 md:h-screen md:shrink-0">
 
-        {/* A — nav spacer (desktop only) */}
+        {/* A — nav spacer */}
         <div className="hidden md:block flex-none h-20" />
 
         {/* B — Heading */}
@@ -183,25 +190,28 @@ export default function Hero() {
           <motion.div className="w-full" variants={stagger} initial="hidden" animate="show">
             {headingLines.map((line, i) => (
               <motion.div key={i} variants={lineReveal} className="overflow-hidden">
-                <div className="flex items-end" style={{ gap: "clamp(6px, 1vw, 14px)" }}>
-
-                  {/* Logo thumbnail inline with "Vehicle" */}
+                <div
+                  className="flex items-center"
+                  style={{ gap: "clamp(6px, 1vw, 14px)" }}
+                >
+                  {/* ── Logo thumbnail ──────────────────────────────────────
+                      Height matches h1 exactly: clamp(2.6rem, 7vw, 7.4vw)
+                      items-center on the parent row keeps it vertically
+                      centred against the text cap-height.
+                  ─────────────────────────────────────────────────────── */}
                   {i === 1 && (
                     <motion.div
                       initial={{ width: 0, opacity: 0 }}
-                      animate={{ width: "clamp(64px, 9vw, 130px)", opacity: 1 }}
+                      animate={{ width: LOGO_WIDTH, opacity: 1 }}
                       transition={{ duration: 0.9, delay: 0.38, ease: [0.76, 0, 0.24, 1] }}
                       className="relative overflow-hidden rounded-md shrink-0"
-                      style={{
-                        height: "clamp(38px, 5vw, 72px)",
-                        marginBottom: "clamp(2px, 0.3vw, 5px)",
-                      }}
+                      style={{ height: LOGO_HEIGHT }}
                     >
                       <Image
                         src="/SwiftysWHITE.png"
                         alt="Swiftys Automobile"
                         fill
-                        className="object-cover"
+                        className="object-contain object-left"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             "https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=200&q=80";
@@ -229,10 +239,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.95, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          
           <div className="mx-5 md:mx-10 h-px bg-zinc-800" />
-
-          
 
           {/* Sub-copy */}
           <div className="px-5 md:px-10 pt-4 pb-3 flex flex-col gap-1 text-center md:text-left">
@@ -253,8 +260,6 @@ export default function Hero() {
             flex flex-col items-center gap-5
             md:px-10 md:pb-9 md:flex-row md:items-center md:justify-between md:gap-4
           ">
-
-            {/* Buttons — centered on mobile */}
             <div className="flex items-center gap-3">
               <button className="
                 px-5 py-[9px] bg-white text-zinc-950 font-bold rounded-full
@@ -281,7 +286,6 @@ export default function Hero() {
               </button>
             </div>
 
-            {/* Stats — centered on mobile, right-aligned desktop */}
             <div className="flex items-center gap-6 md:gap-5">
               {stats.map((s, i) => (
                 <div key={i} className="flex flex-col items-center md:items-end">
@@ -300,7 +304,6 @@ export default function Hero() {
                 </div>
               ))}
             </div>
-
           </div>
         </motion.div>
 

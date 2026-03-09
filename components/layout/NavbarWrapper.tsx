@@ -23,12 +23,12 @@ const mobileMenuVariants = {
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
   },
   exit: {
     opacity: 0,
     x: "100%",
-    transition: { duration: 0.35, ease: [0.76, 0, 0.24, 1] },
+    transition: { duration: 0.35, ease: [0.76, 0, 0.24, 1] as const },
   },
 };
 
@@ -37,7 +37,7 @@ const mobileLinkVariants = {
   show: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { duration: 0.45, delay: i * 0.06 + 0.15, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.45, delay: i * 0.06 + 0.15, ease: [0.22, 1, 0.36, 1] as const },
   }),
 };
 
@@ -46,7 +46,7 @@ const navbarVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -57,7 +57,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
       <motion.span
         className="block h-px bg-white/80 origin-right"
         animate={open ? { rotate: -45, y: 3, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
       />
       <motion.span
         className="block h-px bg-white/80 origin-right"
@@ -67,7 +67,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
       <motion.span
         className="block h-px bg-white/80 origin-right"
         animate={open ? { rotate: 45, y: -3, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
       />
     </div>
   );
@@ -88,7 +88,7 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
         className="absolute -bottom-1 h-px bg-red-600"
         initial={false}
         animate={{ width: active ? "100%" : "0%" }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }}
       />
       {/* Hover underline for non-active */}
       {!active && (
@@ -306,7 +306,7 @@ export default function Navbar() {
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 0.45, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
                 className="px-6 pb-8 pt-6 border-t border-zinc-800 flex flex-col gap-3"
               >
                 {/* Stats strip */}
