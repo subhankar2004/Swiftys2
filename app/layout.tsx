@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/NavbarWrapper";
-import ClientLayout from "@/components/ui/ClientLayout";
-import { Syne } from "next/font/google";
-//const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
 
-import { Space_Grotesk } from "next/font/google";
 
-const grotesk = Space_Grotesk({
+
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["300","400","500","600","700"],
-  variable: "--font-grotesk"
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-playfair",
 });
 
 
@@ -27,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={playfair.variable}>
       <body
-        className={`${grotesk.variable} font-(--font-grotesk)`}
+        className={playfair.className}
       >
         <Navbar/>
           {children}
