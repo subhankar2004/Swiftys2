@@ -3,6 +3,7 @@ import ConceirgeSection from "@/components/sections/ConceirgeSection";
 import ServiceSection from "@/components/sections/ServiceSection";
 import GallerySection from "@/components/sections/GallerySection";
 import AboutSection from "@/components/sections/AboutSection";
+import Footer from "@/components/layout/Footer";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
     <ServiceSection/>
     <GallerySection/>
     <AboutSection/>
+    <Footer/>
     </>
   );
 }

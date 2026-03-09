@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/layout/NavbarWrapper";
 import ClientLayout from "@/components/ui/ClientLayout";
 import { Syne } from "next/font/google";
-const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
+//const syne = Syne({ subsets: ["latin"], variable: "--font-syne" });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { Space_Grotesk } from "next/font/google";
+
+const grotesk = Space_Grotesk({
   subsets: ["latin"],
+  weight: ["300","400","500","600","700"],
+  variable: "--font-grotesk"
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,11 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${grotesk.variable} font-(--font-grotesk)`}
       >
-        <ClientLayout>
+        <Navbar/>
           {children}
-        </ClientLayout>
+        
       </body>
     </html>
   );

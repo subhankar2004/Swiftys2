@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaCarSide, FaShieldAlt, FaTools, FaStar } from "react-icons/fa";
-import { MdDeliveryDining } from "react-icons/md";
+import { FaCarSide, FaShieldAlt, FaTools } from "react-icons/fa";
 import Link from "next/link";
-
 
 
 const features = [
@@ -35,6 +33,14 @@ const features = [
 ];
 
 
+const fadeUp = (delay = 0) => ({
+  initial:    { opacity: 0, y: 28 },
+  whileInView:{ opacity: 1, y: 0  },
+  viewport:   { once: true, margin: "-40px" },
+  transition: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] as const },
+});
+
+
 function FeatureCard({
   feature,
   index,
@@ -46,40 +52,43 @@ function FeatureCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative flex flex-col rounded-2xl border border-white/8 bg-white/3 p-6 backdrop-blur-sm transition-all duration-300 hover:border-amber-400/30 hover:bg-white/6 sm:p-7 lg:p-8"
+      {...fadeUp(index * 0.1)}
+      className="group relative flex flex-col border border-zinc-800 bg-zinc-900/40 p-6 transition-all duration-300 hover:border-zinc-700 hover:bg-zinc-900/70 sm:p-7 lg:p-8"
     >
-      {/* Hover glow */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      {/* Red top-edge accent — appears on hover */}
+      <div className="absolute inset-x-0 top-0 h-px bg-red-600/0 transition-all duration-300 group-hover:bg-red-600/80" />
+
+      {/* Subtle corner glow on hover */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(251,146,60,0.07) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse 55% 35% at 50% 0%, rgba(192,57,43,0.08) 0%, transparent 70%)",
         }}
       />
 
       {/* Icon */}
-      <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-amber-400/20 bg-amber-400/10 text-amber-400 transition-all duration-300 group-hover:border-amber-400/40 group-hover:bg-amber-400/15 sm:h-12 sm:w-12">
-        <Icon size={20} />
+      <div className="mb-6 inline-flex h-10 w-10 items-center justify-center border border-zinc-700 bg-zinc-800 text-zinc-300 transition-all duration-300 group-hover:border-red-600/50 group-hover:text-red-500 sm:h-11 sm:w-11">
+        <Icon size={18} />
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-semibold text-white sm:text-lg">
+      <h3 className="text-sm font-bold uppercase tracking-widest text-white/88 sm:text-sm">
         {feature.title}
       </h3>
 
       {/* Description */}
-      <p className="mt-2.5 flex-1 text-sm leading-relaxed text-neutral-500 sm:text-sm">
+      <p className="mt-3 flex-1 text-[13px] leading-relaxed text-zinc-500 sm:text-sm">
         {feature.description}
       </p>
 
-      {/* Stat pill */}
-      <div className="mt-6 flex items-center gap-3 border-t border-white/6 pt-5">
-        <span className="text-xl font-bold tracking-tight text-white sm:text-2xl">
+      {/* Stat row */}
+      <div className="mt-7 flex items-end gap-3 border-t border-zinc-800 pt-5">
+        <span className="font-black tracking-tighter text-white/90 leading-none"
+          style={{ fontSize: "clamp(1.6rem, 2.5vw, 2rem)" }}>
           {feature.stat}
         </span>
-        <span className="text-xs uppercase tracking-widest text-neutral-600">
+        <span className="mb-0.5 text-[9px] uppercase tracking-[0.25em] text-zinc-600">
           {feature.statLabel}
         </span>
       </div>
@@ -88,95 +97,129 @@ function FeatureCard({
 }
 
 
-
 export default function ConciergeSection() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-black via-neutral-950 to-black py-20 text-white sm:py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-zinc-950 py-20 text-white sm:py-24 lg:py-32">
 
-      {/* ── Background glows — amber theme replacing indigo ── */}
+      {/* ── Background atmosphere (matches hero) ── */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Warm top-center bloom */}
+        {/* Dim red top bloom */}
         <div
-          className="absolute left-1/2 top-0 h-[300px] w-[500px] -translate-x-1/2 rounded-full blur-[100px] sm:h-[400px] sm:w-[700px]"
-          style={{ background: "rgba(251,146,60,0.07)" }}
+          className="absolute left-1/2 top-0 -translate-x-1/2 rounded-full blur-[120px]"
+          style={{
+            width: "600px", height: "320px",
+            background: "rgba(192,57,43,0.07)",
+          }}
         />
-        {/* Bottom-left depth */}
+        {/* Bottom-right depth */}
         <div
-          className="absolute -bottom-20 -left-20 h-[250px] w-[300px] rounded-full blur-[90px] sm:h-[350px] sm:w-[450px]"
-          style={{ background: "rgba(234,88,12,0.05)" }}
+          className="absolute -bottom-24 right-0 rounded-full blur-[100px]"
+          style={{
+            width: "400px", height: "300px",
+            background: "rgba(192,57,43,0.04)",
+          }}
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
 
         {/* ── Header ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          {/* Eyebrow */}
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-1.5">
-            <FaStar className="text-amber-400 text-[10px]" />
-            <span className="text-[11px] font-medium uppercase tracking-widest text-neutral-400">
+        <motion.div {...fadeUp()} className="mb-12 lg:mb-16">
+
+          {/* Eyebrow — matches hero badge style */}
+          <div className="mb-6 flex items-center gap-3">
+            <div className="h-px w-7 bg-red-600" />
+            <span className="text-[11px] uppercase tracking-[0.3em] text-zinc-500">
               White-Glove Service
             </span>
           </div>
 
-          <h2 className="text-3xl font-light tracking-tight sm:text-4xl md:text-5xl">
-            Unmatched Concierge
-            <br className="hidden sm:block" />
-            <span className="text-neutral-400"> Experience</span>
+          {/* Heading — same weight/tracking as hero */}
+          <h2
+            className="uppercase font-black tracking-tighter text-white/88 leading-none"
+            style={{ fontSize: "clamp(2.4rem, 5.5vw, 5rem)" }}
+          >
+            Unmatched
+            <br />
+            <span className="text-zinc-600">Concierge</span>
           </h2>
 
-          <p className="mt-5 text-sm leading-relaxed text-neutral-500 sm:text-base">
-            Precision services designed to preserve performance, security, and
-            excellence — from pickup to final delivery.
-          </p>
+          {/* Divider + sub-copy row — mirrors hero bottom bar layout */}
+          <div className="mt-8 flex flex-col gap-4 border-t border-zinc-800 pt-6 sm:flex-row sm:items-end sm:justify-between">
+            <p className="max-w-md text-[13px] leading-relaxed text-zinc-500 sm:text-sm">
+              Precision services designed to preserve performance, security, and
+              excellence — from pickup to final delivery.
+            </p>
+            {/* Stat trio matching hero stat strip */}
+            <div className="flex items-center gap-6 shrink-0">
+              {[
+                { v: "200+", l: "Vehicles" },
+                { v: "24/7", l: "Coverage" },
+                { v: "15yr", l: "Experience" },
+              ].map((s) => (
+                <div key={s.l} className="flex flex-col items-end">
+                  <span className="font-bold text-white/90 tabular-nums leading-none"
+                    style={{ fontSize: "clamp(1rem, 1.4vw, 1.3rem)" }}>
+                    {s.v}
+                  </span>
+                  <span className="mt-0.5 text-[8.5px] uppercase tracking-widest text-zinc-600">
+                    {s.l}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
-        
-        
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-5 md:grid-cols-3 lg:mt-16 lg:gap-6">
+        {/* ── Feature Cards ── */}
+        <div className="grid grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3">
+          {/*
+            gap-px + zinc-800 wrapper creates a thin dividing line between
+            cards without any visible gaps — feels more architectural/minimal
+          */}
           {features.map((feature, i) => (
             <FeatureCard key={feature.title} feature={feature} index={i} />
           ))}
         </div>
 
-        {/* ── Bottom CTA strip ── */}
+        {/* ── Bottom CTA strip — mirrors hero bottom bar exactly ── */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.3 }}
-          className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/2 px-6 py-7 text-center sm:mt-12 sm:flex-row sm:justify-between sm:text-left lg:mt-14 lg:px-10 lg:py-8"
+          {...fadeUp(0.25)}
+          className="mt-px border border-t-0 border-zinc-800 bg-zinc-900/40 px-6 py-7 sm:px-8 lg:px-10 lg:py-8"
         >
-          <div>
-            <p className="text-sm font-semibold text-white sm:text-base">
-              Ready to experience white-glove service?
-            </p>
-            <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-              Get in touch and we'll tailor a concierge plan for your vehicle.
-            </p>
-          </div>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
-          <div className="flex shrink-0 flex-col gap-2.5 sm:flex-row">
-            <Link
-              href="/concierge"
-              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-linear-to-r from-amber-400 to-orange-500 px-6 py-2.5 text-sm font-semibold text-black shadow-md shadow-orange-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-orange-500/40 hover:shadow-lg active:translate-y-0"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-              <span className="relative">Learn More</span>
-            </Link>
+            <div>
+              <p className="text-[13px] font-semibold uppercase tracking-widest text-white/80 sm:text-sm">
+                Ready to experience white-glove service?
+              </p>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-zinc-600 sm:text-[13px]">
+                Get in touch and we'll tailor a concierge plan for your vehicle.
+              </p>
+            </div>
 
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-transparent px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/6 hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Book a Call
-            </Link>
+            <div className="flex shrink-0 items-center gap-3">
+              {/* Primary — filled white, mirrors hero "Request Storage" */}
+              <Link
+                href="/concierge"
+                className="whitespace-nowrap rounded-full bg-white px-5 py-[9px] text-[10.5px] font-bold uppercase tracking-widest text-zinc-950 transition-all duration-150 hover:bg-zinc-100 active:scale-[0.97]"
+              >
+                Learn More
+              </Link>
+
+              {/* Secondary — bordered, mirrors hero "Explore Fleet" */}
+              <Link
+                href="/contact"
+                className="flex items-center gap-2 whitespace-nowrap rounded-full border border-zinc-700 px-5 py-[9px] text-[10.5px] uppercase tracking-widest text-zinc-400 transition-all duration-150 hover:border-zinc-500 hover:text-white/90 active:scale-[0.97]"
+              >
+                Book a Call
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none" className="opacity-60">
+                  <path d="M1 9L9 1M9 1H3M9 1V7" stroke="currentColor"
+                    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
+
           </div>
         </motion.div>
 
